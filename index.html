@@ -5,18 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Práctica web — Informática III</title>
   </head>
-  <body class="bg-gray-100 text-gray-800">
-
-    <!-- PARTE A: comprobación de Tailwind.
-         Si esta barra se ve azul con texto blanco, Tailwind está funcionando.
-         Bórrala cuando termines la Parte A. -->
-    <div class="bg-blue-600 text-white text-center p-4 font-semibold">
-      ✅ Si ves esta barra azul, Tailwind está funcionando
-    </div>
+  <body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
 
     <!-- EJERCICIO 1: construye aquí tu página (header, main con #catalogo, footer).
          Las instrucciones están en el README. -->
+         <header class = "bg-blue-950 py-6 text-center shadow-sm"> 
+            <h1 class = "font-bold text-blue-100"> Alitach</h1>
+            <p class = "text-sm text-gray-100"> Taller de creación y personalización textil</p>
+         </header>
+         <main class = "max-w-6xl mx-auto px-4 py-8 flex-grow w-full"> 
+            <div id = "catalogo" class = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"> 
+              <div class = "bg-white rounded-lg shadow p-4 flex flex-col justify-between transition duration-200 hover:shadow-md">
+                 <div>
+                  <h2 class = "text-lg font-bold text-center text-blue-900"> Bordado </h2>
+                  <p class = "text-xl text-center text-gray-500 mt-2"> $20 </p>
+                 </div>
+                 <button class = "w-full mt-4 bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-blue-300 cursor-pointer">
+                  Agregar
+                </button>
+               </div>
+               <div class = "bg-white rounded-lg shadow p-4 flex flex-col justify-between transition duration-200 hover:shadow-md">
+                 <div>
+                  <h2 class = "text-lg font-bold text-center text-blue-900"> Serigrafía </h2>
+                  <p class = "text-xl text-center text-gray-500 mt-2"> $50 </p>
+                 </div>
+                 <button class = "w-full mt-4 bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-blue-300 cursor-pointer">
+                  Agregar
+                </button>
+               </div>
+               <div class = "bg-white rounded-lg shadow p-4 flex flex-col justify-between transition duration-200 hover:shadow-md">
+                 <div>
+                  <h2 class = "text-lg font-bold text-center text-blue-900"> Chaleco </h2>
+                  <p class = "text-xl text-center text-gray-500 mt-2"> $150 </p>
+                 </div>
+                 <button class = "w-full mt-4 bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-blue-300 cursor-pointer">
+                  Agregar
+                </button>
+               </div>
 
+         </main>
+          <footer class = "bg-blue-950 text-white text-center text-xs py-4">
+            <p> Equipo ASKI </p>
+          </footer>
+            </div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
