@@ -42,6 +42,44 @@ mostrarProductos(productos)
 const pedido = []
 
 // Escribe aquí tu código del Ejercicio 3
+catalogo.addEventListener('click', (evento) => {
+  const boton = evento.target.closest('button[data-id]')
+  if (!boton) return
+  const id = Number(boton.dataset.id)
+  // 1. busca el producto con productos.find(...)
+  const productoEncontrado = productos.find(p => p.id === id)
+  // 2. agrégalo a pedido con push
+  if (productoEncontrado){
+    pedido.push(productoEncontrado)
+// 3. llama a mostrarPedido()
+    mostrarPedido()
+  }
+})
+
+function mostrarPedido(){
+  const listaPedido = document.getElementById('lista-pedido')
+  const totalContenedor = document.getElementById('total')
+
+  listaPedido.innerHTML = ''
+
+  const itemsHTML = pedido.map(p => `
+    <li>
+      <p>${p.nombre}</p>
+      <p>$${p.precio}</p>
+    </li>
+  `).join('')
+
+  listaPedido.innerHTML = itemsHTML
+
+  const total = pedido.reduce((suma, p) => suma + p.precio, 0)
+  totalContenedor.innerText = `Total: $${total}`
+}
+
+document.getElementById('btn-vaciar').addEventListener('click', () => {
+  pedido.length = 0
+  mostrarPedido()
+}
+)
 
 // ------------------------------------------------------------
 // EJERCICIO 4 — Filtrar por categoría
