@@ -1,5 +1,5 @@
 import './style.css'
-import { productos } from './datos.js'
+ import { productos } from './datos.js'
 
 // Elemento donde se dibujan las tarjetas (lo creas en el Ejercicio 1)
 const catalogo = document.getElementById('catalogo')
@@ -88,3 +88,25 @@ document.getElementById('btn-vaciar').addEventListener('click', () => {
 // ------------------------------------------------------------
 
 // Escribe aquí tu código del Ejercicio 4
+const botones = document.querySelectorAll('#categorias button')
+botones.forEach(boton => {
+  boton.addEventListener('click', (e) => {
+    const categoria = e.currentTarget.getAttribute('data-categoria')
+
+    let productosFiltrados
+    if (categoria === 'Todos') {
+      productosFiltrados = productos
+    } else {
+      productosFiltrados = productos.filter(p => p.categoria === categoria)
+    }
+    mostrarProductos(productosFiltrados)
+
+    botones.forEach(b => {
+      if (b ===e.target){
+        b.className = 'btn-filtro bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-blue-300 cursor-pointer'
+      } else {
+        b.className = 'btn-filtro bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-gray-300 cursor-pointer'
+      }
+    })
+  })
+})
