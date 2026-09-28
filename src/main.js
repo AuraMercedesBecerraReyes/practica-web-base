@@ -125,3 +125,68 @@ botones.forEach(boton => {
   })
 })
 
+// EJERCICIO 5. Datos del cliente que sirven para confirmar el pedid0
+document.getElementById('form-cliente').addEventListener('submit', function(evento) {
+evento.preventDefault()
+  const Nombre = document.getElementById('nombre')
+  const Telefono = document.getElementById('telefono')
+  const Correo = document.getElementById('correo')
+  const errorNombre = document.getElementById('error-nombre')
+  const errorTelefono = document.getElementById('error-telefono')
+  const errorCorreo = document.getElementById('error-correo')
+  const errorPedido = document.getElementById('error-pedido')
+ const exitoPedido = document.getElementById('exito-pedido')
+ 
+  let esValido = true;
+
+  if (Nombre.value.trim() === ''){
+    errorNombre.textContent = 'El nombre no puede estar vacío ni ser solo espacios'
+    errorNombre.classList.remove('hidden')
+    Nombre.classList.add('border-red-600')
+    esValido = false
+  } else {
+    errorNombre.classList.add('hidden')
+    Nombre.classList.remove('border-red-600')
+  }
+
+  if(!/^\d{10}$/.test(Telefono.value.trim())){
+    errorTelefono.textContent = 'El teléfono debe tener 10 dígitos'
+    errorTelefono.classList.remove('hidden')
+    Telefono.classList.add('border-red-600')
+    esValido = false
+  } else {
+    errorTelefono.classList.add('hidden')
+    Telefono.classList.remove('border-red-600')
+  }
+
+  if(!/^\S+@\S+\.\S+$/.test(Correo.value.trim())){
+    errorCorreo.textContent = 'La forma del correo debe ser algo@algo.algo'
+    errorCorreo.classList.remove('hidden')
+    Correo.classList.add('border-red-600')
+    esValido = false
+  } else {
+    errorCorreo.classList.add('hidden')
+    Correo.classList.remove('border-red-600')
+  }
+
+  if (pedido.length === 0) {
+    errorPedido.textContent = 'El pedido no puede estar vacío.';
+    errorPedido.classList.remove('hidden');
+    esValido = false;
+  } else {
+    errorPedido.classList.add('hidden');
+  }
+
+    if (esValido) {
+    exitoPedido.textContent = 'Pedido confirmado';
+    exitoPedido.classList.remove('hidden');
+    
+    pedido.length = 0;
+    mostrarPedido();
+    this.reset();
+
+    setTimeout(() => {
+      exitoPedido.classList.add('hidden');
+    }, 3000);
+  }
+});

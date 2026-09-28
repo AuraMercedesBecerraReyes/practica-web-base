@@ -38,7 +38,29 @@
 
               </ul>
               <p id="total" class = "font-bold text-gray-700 mt-2"> </p>
-              <button id="btn-vaciar" class = "w-full mt-4 bg-gray-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-gray-500 cursor-pointer">
+
+              <form id="form-cliente">
+                <div class="text-center">
+                  <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre: </label>
+                  <input id="nombre" class=" border rounded">
+                  <p id="error-nombre" class="text-sm text-red-500 hidden"></p>
+                </div>
+
+                <div class="text-center">
+                  <label for="telefono" class=" block text-sm font-medium text-gray-700">Teléfono: </label>
+                  <input id="telefono" class=" border rounded">
+                  <p id="error-telefono" class="text-sm text-red-500 hidden"></p>
+                </div>
+                <div class="text-center">
+                  <label for="correo" class="block text-sm font-medium text-gray-700">Correo: </label>
+                  <input id="correo" class=" border rounded">
+                  <p id="error-correo" class="text-sm text-red-500 hidden"></p>
+                </div>
+                <p id="error-pedido" class="text-sm text-red-600 hidden text-center font-semibold"></p>
+                <button type="submit" class=" w-full mt-4 bg-green-600 text-white p-2 rounded hover:bg-green-700 transition">Confirmar pedido</button>
+                <p id="exito-pedido" class=" mt-4 text-sm text-green-800 hidden text-center font-semibold"></p>
+              </form>
+             <button id="btn-vaciar" class = "w-full mt-4 bg-gray-600 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200 hover:bg-gray-500 cursor-pointer">
               Vaciar pedido
               </button>
           </aside>
