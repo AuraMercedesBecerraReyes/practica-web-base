@@ -125,6 +125,16 @@ botones.forEach(boton => {
   })
 })
 
+
+const pedidosRegistrados = []
+const ESTADOS = ['Pendiente', 'En preparación', 'Entregado']
+
+const COLORES = { 
+  'Pendiente': 'bg-yellow-100 border-yellow-400', 
+  'En preparación': 'bg-blue-100 border-blue-400', 
+  'Entregado': 'bg-green-100 border-green-400' 
+}
+
 // EJERCICIO 5. Datos del cliente que sirven para confirmar el pedid0
 document.getElementById('form-cliente').addEventListener('submit', function(evento) {
 evento.preventDefault()
@@ -135,8 +145,8 @@ evento.preventDefault()
   const errorTelefono = document.getElementById('error-telefono')
   const errorCorreo = document.getElementById('error-correo')
   const errorPedido = document.getElementById('error-pedido')
- const exitoPedido = document.getElementById('exito-pedido')
- 
+  const exitoPedido = document.getElementById('exito-pedido')
+
   let esValido = true;
 
   if (Nombre.value.trim() === ''){
@@ -178,15 +188,82 @@ evento.preventDefault()
   }
 
     if (esValido) {
+      //ejercicio 6
+    const totalFinal = pedido.reduce((suma, p) => suma + (p.precio * p.cantidad), 0)
+    const nuevoPedidoRegistrado = {
+      id: Date.now(),
+      cliente: {
+      nombre : Nombre.value.trim(),
+      telefono : Telefono.value.trim(),
+      correo : Correo.value.trim(),
+      },
+      productos: [...pedido],
+      total: totalFinal,
+      estado: 'Pendiente',
+    }
+    
+    pedidosRegistrados.push(nuevoPedidoRegistrado)
+
     exitoPedido.textContent = 'Pedido confirmado';
     exitoPedido.classList.remove('hidden');
-    
-    pedido.length = 0;
-    mostrarPedido();
-    this.reset();
+
+    pedido.length = 0 
+    mostrarPedido()
+    this.reset()  
+
+    mostrarPedidosRegistrados()
 
     setTimeout(() => {
       exitoPedido.classList.add('hidden');
     }, 3000);
   }
 });
+
+// EJERCICIO 6.
+
+const contenedor = document.getElementById('pedidos-registrados')
+function mostrarPedidosRegistrados() {
+  contenedor.innerHTML = pedidosRegistrados.map(p => {
+    const color = COLORES[p.estado];
+
+    let botonAvanzar = ''
+    if (p.estado !== 'Entregado'){
+      botonAvanzar = `<button data-avanzar="${p.id}" class="mt-2 bg-indigo-600 text-white py-1 px-2 rounded text-sm cursor-pointer">Avanzar estado</button>`
+    }
+
+    const productosDelPedido = p.productos.map(prod => `
+      <li class="text-sm text-gray-700">${prod.nombre} x ${prod.cantidad}</li>
+    `).join('');
+
+    return `
+      <article class="p-4 border-l-4 rounded shadow ${color}">
+        <h3 class="font-bold text-lg text-gray-900">Pedido #${p.id} — <class="font-bold bg-white px-2 py-2 rounded border">${p.estado}</h3>
+        <p class="text-sm mt-1"><strong>Cliente:</strong> ${p.cliente.nombre}   Tel:${p.cliente.telefono}   Correo:${p.cliente.correo} </p>
+        <ul class="list-disc pl-5 my-2">
+          ${productosDelPedido}
+        </ul>
+        <p class="font-bold text-gray-800">Total: $${p.total}</p>
+        ${botonAvanzar}
+      </article>
+    `
+  }) .join('')
+}
+
+document.getElementById('pedidos-registrados').addEventListener('click', (evento) => {
+  const boton = evento.target.closest('button[data-avanzar]');
+  if (!boton) return;
+   
+  const idPedido = Number(boton.dataset.avanzar)
+
+  const pedidoEncontrado = pedidosRegistrados.find (p => p.id === idPedido)
+
+  if (pedidoEncontrado){
+    const indiceActual = ESTADOS.indexOf(pedidoEncontrado.estado)
+      
+    if (indiceActual < ESTADOS.length -1){
+      pedidoEncontrado.estado = ESTADOS [indiceActual + 1]
+
+      mostrarPedidosRegistrados()
+    }
+  }
+})
