@@ -135,9 +135,11 @@ const COLORES = {
   'Entregado': 'bg-green-100 border-green-400' 
 }
 
+let filtroEstadoActual = 'Todos'
+
 // EJERCICIO 5. Datos del cliente que sirven para confirmar el pedid0
 document.getElementById('form-cliente').addEventListener('submit', function(evento) {
-evento.preventDefault()
+  evento.preventDefault()
   const Nombre = document.getElementById('nombre')
   const Telefono = document.getElementById('telefono')
   const Correo = document.getElementById('correo')
@@ -187,15 +189,14 @@ evento.preventDefault()
     errorPedido.classList.add('hidden');
   }
 
-    if (esValido) {
-      //ejercicio 6
+  if (esValido) {
     const totalFinal = pedido.reduce((suma, p) => suma + (p.precio * p.cantidad), 0)
     const nuevoPedidoRegistrado = {
       id: Date.now(),
       cliente: {
-      nombre : Nombre.value.trim(),
-      telefono : Telefono.value.trim(),
-      correo : Correo.value.trim(),
+        nombre : Nombre.value.trim(),
+        telefono : Telefono.value.trim(),
+        correo : Correo.value.trim(),
       },
       productos: [...pedido],
       total: totalFinal,
@@ -215,16 +216,32 @@ evento.preventDefault()
 
     setTimeout(() => {
       exitoPedido.classList.add('hidden');
-    }, 3000);
+    }, 2000);
   }
 });
 
 // EJERCICIO 6.
-
-const contenedor = document.getElementById('pedidos-registrados')
 function mostrarPedidosRegistrados() {
-  contenedor.innerHTML = pedidosRegistrados.map(p => {
-    const color = COLORES[p.estado];
+  const contenedor = document.getElementById('pedidos-registrados')
+  if (!contenedor) return;
+
+  
+  document.getElementById('cant-Todos').innerText = pedidosRegistrados.length;
+  document.getElementById('cant-Pendiente').innerText = pedidosRegistrados.filter(p => p.estado === 'Pendiente').length;
+  document.getElementById('cant-En-preparacion').innerText = pedidosRegistrados.filter(p => p.estado === 'En preparación').length;
+  document.getElementById('cant-Entregado').innerText = pedidosRegistrados.filter(p => p.estado === 'Entregado').length;
+
+  
+  let pedidosFiltrados;
+  if (filtroEstadoActual === 'Todos') {
+    pedidosFiltrados = pedidosRegistrados; 
+  } else {
+    pedidosFiltrados = pedidosRegistrados.filter(p => p.estado === filtroEstadoActual);
+  }
+
+  
+  contenedor.innerHTML = pedidosFiltrados.map(p => {
+    const color = COLORES[p.estado] || '';
 
     let botonAvanzar = ''
     if (p.estado !== 'Entregado'){
@@ -236,9 +253,9 @@ function mostrarPedidosRegistrados() {
     `).join('');
 
     return `
-      <article class="p-4 border-l-4 rounded shadow ${color}">
-        <h3 class="font-bold text-lg text-gray-900">Pedido #${p.id} — <class="font-bold bg-white px-2 py-2 rounded border">${p.estado}</h3>
-        <p class="text-sm mt-1"><strong>Cliente:</strong> ${p.cliente.nombre}   Tel:${p.cliente.telefono}   Correo:${p.cliente.correo} </p>
+      <article class="p-4 border-l-4 rounded shadow mt-3 ${color}">
+        <h3 class="font-bold text-lg text-gray-900">Pedido #${p.id} — <span class="font-bold bg-white px-2 py-0.5 rounded border text-xs text-gray-700">${p.estado}</span></h3>
+        <p class="text-sm mt-1"><strong>Cliente:</strong> ${p.cliente.nombre} | Tel: ${p.cliente.telefono} | Correo: ${p.cliente.correo}</p>
         <ul class="list-disc pl-5 my-2">
           ${productosDelPedido}
         </ul>
@@ -246,7 +263,7 @@ function mostrarPedidosRegistrados() {
         ${botonAvanzar}
       </article>
     `
-  }) .join('')
+  }).join('')
 }
 
 document.getElementById('pedidos-registrados').addEventListener('click', (evento) => {
@@ -254,16 +271,33 @@ document.getElementById('pedidos-registrados').addEventListener('click', (evento
   if (!boton) return;
    
   const idPedido = Number(boton.dataset.avanzar)
-
-  const pedidoEncontrado = pedidosRegistrados.find (p => p.id === idPedido)
+  const pedidoEncontrado = pedidosRegistrados.find(p => p.id === idPedido)
 
   if (pedidoEncontrado){
     const indiceActual = ESTADOS.indexOf(pedidoEncontrado.estado)
       
-    if (indiceActual < ESTADOS.length -1){
-      pedidoEncontrado.estado = ESTADOS [indiceActual + 1]
-
+    if (indiceActual < ESTADOS.length - 1){
+      pedidoEncontrado.estado = ESTADOS[indiceActual + 1]
       mostrarPedidosRegistrados()
     }
   }
 })
+
+// extra 
+const botonesFiltroPedidos = document.querySelectorAll('#filtros-pedidos button');
+
+botonesFiltroPedidos.forEach(b => {
+  b.addEventListener('click', (e) => {
+    filtroEstadoActual = e.currentTarget.getAttribute('data-filtro-estado');
+ 
+    mostrarPedidosRegistrados();
+
+    botonesFiltroPedidos.forEach(btn => {
+      if (btn === e.currentTarget) {
+        btn.className = 'bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer transition';
+      } else {
+        btn.className = 'bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded cursor-pointer hover:bg-gray-300 transition';
+      }
+    });
+  });
+});

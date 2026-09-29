@@ -32,12 +32,24 @@
             <div id="catalogo" class = "grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"> 
             </div>
 
-            <section class="mt-8 p-4">
-              <h2  class = "text-lg font-bold text-center text-gray-700">Pedidos registrados</h2>
-              <div id="pedidos-registrados">
-
-              </div>
-            </section>
+          <section class="mt-8 p-4">
+  <h2 class="text-lg font-bold text-center text-gray-700">Pedidos registrados</h2>
+  <div id="filtros-pedidos" class="flex gap-2 my-4 justify-center">
+    <button data-filtro-estado="Todos" class="bg-blue-600 text-white font-semibold py-2 px-4 rounded cursor-pointer">
+      Todos (<span id="cant-Todos">0</span>)
+    </button>
+    <button data-filtro-estado="Pendiente" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded cursor-pointer">
+      Pendientes (<span id="cant-Pendiente">0</span>)
+    </button>
+    <button data-filtro-estado="En preparación" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded cursor-pointer">
+      En preparación (<span id="cant-En-preparacion">0</span>)
+    </button>
+    <button data-filtro-estado="Entregado" class="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded cursor-pointer">
+      Entregado (<span id="cant-Entregado">0</span>)
+    </button>
+  </div>
+  <div id="pedidos-registrados"> </div>
+</section>
 
             <aside class = "bg-blue-200 rounded-lg shadow p-4 flex flex-col justify-between transition duration-200 hover:shadow-md">
               <h2  class = "text-lg font-bold text-center text-gray-700">Mi pedido</h2>
